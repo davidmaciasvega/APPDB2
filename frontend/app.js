@@ -1,27 +1,32 @@
-const API_URL = "http://localhost:5000/movies";
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// URL de la API del backend (Render)
+const API_URL = "https://appdb2.onrender.com/movies";
 
 // 🔹 Cargar todas las películas al iniciar
 async function loadMovies() {
-  const res = await fetch(API_URL);
-  const movies = await res.json();
-  const table = document.getElementById("movies-table");
-  table.innerHTML = "";
+  try {
+    const res = await fetch(API_URL);
+    const movies = await res.json();
 
-  movies.forEach(movie => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${movie.id}</td>
-      <td>${movie.title}</td>
-      <td>${movie.director}</td>
-      <td>${movie.year}</td>
-      <td>
-        <button onclick="editMovie(${movie.id}, '${movie.title}', '${movie.director}', ${movie.year})">Editar</button>
-        <button onclick="deleteMovie(${movie.id})">Eliminar</button>
-      </td>
-    `;
-    table.appendChild(row);
-  });
+    const table = document.getElementById("movies-table");
+    table.innerHTML = "";
+
+    movies.forEach(movie => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${movie.id}</td>
+        <td>${movie.title}</td>
+        <td>${movie.director}</td>
+        <td>${movie.year}</td>
+        <td>
+          <button onclick="editMovie(${movie.id}, '${movie.title}', '${movie.director}', ${movie.year})">Editar</button>
+          <button onclick="deleteMovie(${movie.id})">Eliminar</button>
+        </td>
+      `;
+      table.appendChild(row);
+    });
+  } catch (err) {
+    console.error("Error cargando películas:", err);
+  }
 }
 
 // 🔹 Agregar o actualizar una película
@@ -67,4 +72,5 @@ async function deleteMovie(id) {
   loadMovies();
 }
 
+// Inicializar al cargar
 loadMovies();
