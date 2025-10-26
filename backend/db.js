@@ -1,5 +1,6 @@
 import pg from "pg";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 export const pool = new pg.Pool({
@@ -8,4 +9,7 @@ export const pool = new pg.Pool({
   password: process.env.PGPASSWORD,
   database: process.env.PGDATABASE,
   port: process.env.PGPORT,
+  ssl: {
+    rejectUnauthorized: false, // 🔹 necesario para Render
+  },
 });
