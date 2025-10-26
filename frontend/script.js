@@ -1,12 +1,10 @@
-// 🔹 API_URL según entorno
-const API_URL = window.location.hostname === "localhost"
-  ? "http://localhost:5000/movies"   // backend local
-  : "https://tu-app-render.onrender.com/movies"; // reemplaza con tu URL en Render
+// 🔹 URL de la API (relativa para que funcione en Render y local)
+const API_URL = "/movies";
 
 // 🔹 Cargar todas las películas
 async function loadMovies() {
-  const response = await fetch(API_URL);
-  const movies = await response.json();
+  const res = await fetch(API_URL);
+  const movies = await res.json();
 
   const table = document.getElementById("movies-table");
   table.innerHTML = `
@@ -35,7 +33,7 @@ async function loadMovies() {
   });
 }
 
-// 🔹 Agregar o actualizar película
+// 🔹 Agregar o actualizar una película
 document.getElementById("movie-form").addEventListener("submit", async e => {
   e.preventDefault();
 
@@ -78,5 +76,5 @@ async function deleteMovie(id) {
   loadMovies();
 }
 
-// 🔹 Cargar películas al inicio
+// 🔹 Inicializar tabla
 loadMovies();
