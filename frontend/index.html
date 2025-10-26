@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo de Películas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>🎬 Catálogo de Películas</h1>
+
+  <section id="form-section">
+    <h2>Agregar / Editar Película</h2>
+    <form id="movie-form">
+      <input type="hidden" id="movie-id" />
+      <input type="text" id="title" placeholder="Título" required />
+      <input type="text" id="director" placeholder="Director" required />
+      <input type="number" id="year" placeholder="Año" required />
+      <button type="submit">Guardar</button>
+    </form>
+  </section>
+
+  <section id="list-section">
+    <h2>Lista de Películas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Director</th>
+          <th>Año</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="movies-table"></tbody>
+    </table>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
