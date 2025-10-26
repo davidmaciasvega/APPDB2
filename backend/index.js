@@ -2,12 +2,17 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
 import { pool } from "./db.js";
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// 🔹 Variables para rutas absolutas (ES Modules)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // 🔹 API CRUD
 app.get("/movies", async (req, res) => {
@@ -47,12 +52,13 @@ app.delete("/movies/:id", async (req, res) => {
 });
 
 // 🔹 Servir frontend
-app.use(express.static(path.join('frontend')));
+app.use(express.static(path.join(__dirname, "../frontend")));
 
+// Ruta catch-all para SPA
 app.get("*", (req, res) => {
-  res.sendFile(path.join('frontend', 'index.html'));
+  res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
 
-// 🔹 Puerto dinámico
+// 🔹 Puerto dinámico (Render asigna PORT automáticamente)
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
