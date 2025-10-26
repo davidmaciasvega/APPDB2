@@ -34,28 +34,36 @@ document.getElementById("movie-form").addEventListener("submit", async e => {
   e.preventDefault();
 
   const id = document.getElementById("movie-id").value;
-  const movie = {
-    title: document.getElementById("title").value,
-    director: document.getElementById("director").value,
-    year: parseInt(document.getElementById("year").value),
-  };
+  let title = document.getElementById("title").value;
+  let director = document.getElementById("director").value;
+  const year = parseInt(document.getElementById("year").value);
 
-  if (id) {
-    await fetch(`${API_URL}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(movie),
-    });
-  } else {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(movie),
-    });
+  // 🔹 Validación de longitud (100 caracteres máximo)
+  if (title.length > 100) title = title.slice(0, 100);
+  if (director.length > 100) director = director.slice(0, 100);
+
+  const movie = { title, director, year };
+
+  try {
+    if (id) {
+      await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(movie),
+      });
+    } else {
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(movie),
+      });
+    }
+    document.getElementById("movie-form").reset();
+    loadMovies();
+  } catch (err) {
+    console.error("Error guardando película:", err);
+    alert("No se pudo guardar la película. Revisa los datos e inténtalo de nuevo.");
   }
-
-  document.getElementById("movie-form").reset();
-  loadMovies();
 });
 
 // 🔹 Editar película
@@ -68,8 +76,13 @@ function editMovie(id, title, director, year) {
 
 // 🔹 Eliminar película
 async function deleteMovie(id) {
-  await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-  loadMovies();
+  try {
+    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    loadMovies();
+  } catch (err) {
+    console.error("Error eliminando película:", err);
+    alert("No se pudo eliminar la película.");
+  }
 }
 
 // Inicializar al cargar
