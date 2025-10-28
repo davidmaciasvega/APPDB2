@@ -33,3 +33,51 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+   body {
+      background-color: #121212;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1, h2 {
+      color: #00ff9d;
+    }
+
+    .card {
+      background-color: #1e1e1e;
+      border: 1px solid #2a2a2a;
+    }
+
+    .btn-primary {
+      background-color: #00ff9d;
+      border: none;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background-color: #00cc7a;
+      color: #fff;
+    }
+
+    .table-dark {
+      background-color: #00ff9d;
+      color: #000;
+    }
+
+    footer {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: #00ff9d;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+    .text-accent {
+    color: #3399ff !important; /* Usamos !important para anular la regla Bootstrap y la regla h1, h2 */
+}
