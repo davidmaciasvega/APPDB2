@@ -20,12 +20,12 @@ const __dirname = path.dirname(__filename);
 // 🔹 Rutas API
 
 // Ruta de prueba
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("API de Juegos funcionando 🎮");
 });
 
 // Obtener todos los juegos
-app.get("/games", async (req, res) => {
+app.get("/api/games", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM games ORDER BY id ASC");
     res.json(result.rows);
@@ -36,7 +36,7 @@ app.get("/games", async (req, res) => {
 });
 
 // Obtener un juego por ID
-app.get("/games/:id", async (req, res) => {
+app.get("/api/games/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("SELECT * FROM games WHERE id=$1", [id]);
@@ -50,9 +50,8 @@ app.get("/games/:id", async (req, res) => {
 });
 
 // Agregar un nuevo juego
-app.post("/games", async (req, res) => {
-  const { name, descripction, platform, genre, year, developer, rating } =
-    req.body;
+app.post("/api/games", async (req, res) => {
+  const { name, descripction, platform, genre, year, developer, rating } = req.body;
   try {
     const result = await pool.query(
       `INSERT INTO games (name, descripction, platform, genre, year, developer, rating)
@@ -67,10 +66,9 @@ app.post("/games", async (req, res) => {
 });
 
 // Editar un juego existente
-app.put("/games/:id", async (req, res) => {
+app.put("/api/games/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, descripction, platform, genre, year, developer, rating } =
-    req.body;
+  const { name, descripction, platform, genre, year, developer, rating } = req.body;
   try {
     const result = await pool.query(
       `UPDATE games SET name=$1, descripction=$2, platform=$3, genre=$4, year=$5, developer=$6, rating=$7
@@ -87,7 +85,7 @@ app.put("/games/:id", async (req, res) => {
 });
 
 // Eliminar un juego
-app.delete("/games/:id", async (req, res) => {
+app.delete("/api/games/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query("DELETE FROM games WHERE id=$1", [id]);
@@ -103,12 +101,13 @@ app.delete("/games/:id", async (req, res) => {
 // 🔹 Servir frontend (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Ruta catch-all para SPA (para que cualquier otra ruta devuelva index.html)
-app.get(/.*/, (req, res) => {
+// Catch-all SPA solo para rutas que no empiecen con /api
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
+
 // 🔹 Puerto
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`)
 );
