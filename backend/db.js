@@ -12,3 +12,4 @@ export const pool = new pg.Pool({
     rejectUnauthorized: false
   }
 });
+
