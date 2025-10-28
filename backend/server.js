@@ -17,7 +17,7 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 🔹 Rutas API
+// 🔹 Rutas API (con prefijo /api)
 
 // Ruta de prueba
 app.get("/api", (req, res) => {
@@ -51,7 +51,8 @@ app.get("/api/games/:id", async (req, res) => {
 
 // Agregar un nuevo juego
 app.post("/api/games", async (req, res) => {
-  const { name, descripction, platform, genre, year, developer, rating } = req.body;
+  const { name, descripction, platform, genre, year, developer, rating } =
+    req.body;
   try {
     const result = await pool.query(
       `INSERT INTO games (name, descripction, platform, genre, year, developer, rating)
@@ -68,7 +69,8 @@ app.post("/api/games", async (req, res) => {
 // Editar un juego existente
 app.put("/api/games/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, descripction, platform, genre, year, developer, rating } = req.body;
+  const { name, descripction, platform, genre, year, developer, rating } =
+    req.body;
   try {
     const result = await pool.query(
       `UPDATE games SET name=$1, descripction=$2, platform=$3, genre=$4, year=$5, developer=$6, rating=$7
@@ -98,10 +100,10 @@ app.delete("/api/games/:id", async (req, res) => {
   }
 });
 
-// 🔹 Servir frontend (HTML, CSS, JS)
+// 🔹 Servir frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Catch-all SPA solo para rutas que no empiecen con /api
+// 🔹 Catch-all solo para rutas que NO empiezan con /api
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
