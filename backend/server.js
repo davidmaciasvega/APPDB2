@@ -111,9 +111,7 @@ const frontendPath = path.join(__dirname, "../frontend");
 app.use(express.static(frontendPath, { extensions: ["html"] }));
 
 // Manejar cualquier ruta que no empiece con /api → devolver index.html
-app.get("*", (req, res) => {
-  if (req.path.startsWith("/api"))
-    return res.status(404).send("Ruta de API no encontrada");
+app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
