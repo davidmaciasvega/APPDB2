@@ -1,5 +1,5 @@
 // URL de la API del backend (Render) para juegos
-const API_URL = "https://appdb2.onrender.com/games";
+const API_URL = "https://appdb2.onrender.com/api/games"; 
 
 // 🔹 Cargar todos los juegos al iniciar
 async function loadGames() {

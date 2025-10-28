@@ -17,7 +17,9 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 🔹 Rutas API (con prefijo /api)
+// ======================
+// 🔹 RUTAS DE LA API
+// ======================
 
 // Ruta de prueba
 app.get("/api", (req, res) => {
@@ -100,15 +102,24 @@ app.delete("/api/games/:id", async (req, res) => {
   }
 });
 
-// 🔹 Servir frontend
-app.use(express.static(path.join(__dirname, "../frontend")));
+// ======================
+// 🔹 SERVIR FRONTEND
+// ======================
+const frontendPath = path.join(__dirname, "../frontend");
 
-// 🔹 Catch-all solo para rutas que NO empiezan con /api
-app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/index.html"));
+// Servir archivos estáticos (HTML, CSS, JS)
+app.use(express.static(frontendPath, { extensions: ["html"] }));
+
+// Manejar cualquier ruta que no empiece con /api → devolver index.html
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/api"))
+    return res.status(404).send("Ruta de API no encontrada");
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
-// 🔹 Puerto
+// ======================
+// 🔹 PUERTO
+// ======================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`🚀 Servidor escuchando en http://localhost:${PORT}`)
